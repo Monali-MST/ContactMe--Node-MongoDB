@@ -32,6 +32,13 @@ const createContact = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("All fields are mandatory !");
   }
+
+  const contactAvailable = await Contact.findOne({ phone });
+  if (contactAvailable) {
+    res.status(400);
+    throw new Error("Phone number already registered!");
+  }
+
   const contact = await Contact.create({
     name,
     email,
